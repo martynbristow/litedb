@@ -16,7 +16,7 @@ matrix:
       python: "3.9"
       env: export PATH="/c/Python39:/c/Python39/Scripts:$PATH"
       before_install:
-        - choco install python3 pip3
+        - choco install python3 pip
         - python -m pip install -r requirements-dev.txt
         - python setup.py install
     - os: osx
