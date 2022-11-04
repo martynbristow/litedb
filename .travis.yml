@@ -14,8 +14,8 @@ matrix:
         - python setup.py install
     - os: windows
       language: sh
-      python: "3.10"
-      env: export PATH="/c/Python39:/c/Python39/Scripts:$PATH"
+      python: "3.11"
+      env: export PATH="/c/Python311:/c/Python311/Scripts:$PATH"
       before_install:
         - choco install python3
         - pip install -u pip
