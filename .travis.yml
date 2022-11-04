@@ -18,7 +18,7 @@ matrix:
       env: export PATH="/c/Python311:/c/Python311/Scripts:$PATH"
       before_install:
         - choco install python3
-        - pip install -u pip
+        - pip install -U pip
         - python -m pip install -r requirements-dev.txt
         - python setup.py install
     - os: osx
