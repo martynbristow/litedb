@@ -1,19 +1,19 @@
 language: python
-python: 3.7
-dist: xenial
+python: 3.8
+dist: jammy
 sudo: true
 matrix:
   include:
     - os: linux
-      dist: xenial
-      python: 3.7
+      dist: jammy
+      python: 3.10
       sudo: true
       before_install:
         - pip install -r requirements-dev.txt
         - python setup.py install
     - os: windows
       language: sh
-      python: "3.9"
+      python: "3.10"
       env: export PATH="/c/Python39:/c/Python39/Scripts:$PATH"
       before_install:
         - choco install python3
