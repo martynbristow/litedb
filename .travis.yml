@@ -1,5 +1,5 @@
 language: python
-python: 3.8
+python: 3.10
 dist: jammy
 sudo: true
 matrix:
@@ -9,6 +9,7 @@ matrix:
       python: 3.10
       sudo: true
       before_install:
+        - pip install -U pip
         - pip install -r requirements-dev.txt
         - python setup.py install
     - os: windows
@@ -17,13 +18,14 @@ matrix:
       env: export PATH="/c/Python39:/c/Python39/Scripts:$PATH"
       before_install:
         - choco install python3
-        - easy_install -U pip
+        - pip install -u pip
         - python -m pip install -r requirements-dev.txt
         - python setup.py install
     - os: osx
       osx_image: xcode10.2
       language: shell
       before_install:
+        - pip install -U pip
         - pip3 install -r requirements-dev.txt
         - python3 setup.py install
       script:
@@ -32,9 +34,3 @@ script:
     - pytest --cov litedb
 after_success:
     - coveralls
-notifications:
-  email:
-    recipients:
-      - jonathanvusich@gmail.com
-    on_success: never
-    on_failure: always
