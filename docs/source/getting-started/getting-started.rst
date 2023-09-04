@@ -50,13 +50,13 @@ we might create a simple record class called ``WeatherRecord``.
 
     class WeatherRecord:
 
-    def __init__(self, day: date, temp: int, wind_speed: int):
-        self.day = day
-        self.temp = temp
-        self.wind_speed = wind_speed
+        def __init__(self, day: date, temp: int, wind_speed: int):
+            self.day = day
+            self.temp = temp
+            self.wind_speed = wind_speed
 
-    def __repr__(self) -> str:
-        return str(self.__dict__)
+        def __repr__(self) -> str:
+            return str(self.__dict__)
 
 This object will be indexable by all three of its class attributes, and thus is an ideal candidate for ``liteDB``.
 We will then proceed to insert our ``WeatherRecord`` objects into a ``liteDB`` instance.
@@ -74,6 +74,21 @@ We will then proceed to insert our ``WeatherRecord`` objects into a ``liteDB`` i
     mem_db.insert(day_before_yesterday)
     mem_db.insert(yesterday)
     mem_db.insert(today)
+
+Inserting with DiskDatabase
+---------------------------
+
+Using DiskDatabase, the behavior is similar but requires ``.commit()`` to persist the record
+
+.. code-block:: python
+
+    from litedb import DiskDatabase
+
+    disk_db = DiskDatabase()
+    disk_db.insert(WeatherRecord(date.today(), 57, 13))
+    disk_db.commit()
+
+
 
 .. warning::
 
@@ -147,13 +162,32 @@ Queries can also be narrowed by adding more parameters to the ``retrieve()`` cal
 You might notice that each query is wrapped in a ``list()`` call. This is because ``liteDB`` returns a generator of entries
 with each query, reducing the number of objects that have to be loaded into memory at once.
 
+To retrieve ALL Data, without filtering iterate over the select or pass it to list:
+
+.. code-block:: python
+
+    for item in disk_db.select(WeatherRecord):
+        print(item)
+
 Deleting data
 =============
+
+Remove Specific Records
+-----------------------
 
 Removing entries from a ``liteDB`` instance is as easy as performing a ``delete()`` query instead of a ``retrieve()`` query.
 
 .. code-block:: python
 
     weather_records.delete(wind_speed=(None, 13))
-    list(weather_records.retrieve_all())
+    list(weather_records)
     >>> [{'day': datetime.date(2019, 11, 4), 'temp': 45, 'wind_speed': 23}]
+
+Remove All Records (DiskDatabase)
+-----------------------------------
+
+Only Applies to `DiskDatabase` only, call the method clear on the table.
+
+.. code-block:: python
+
+    disk_db.select(WeatherRecord).clear()
